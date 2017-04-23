@@ -21,21 +21,30 @@ import android.widget.TextView;
 import com.jjhhh.dice.Models.DiceCount;
 import com.jjhhh.dice.Models.DiceRolls;
 
+//random comment
 public class CustomDiceActivity extends AppCompatActivity {
 
+    //random comment
     DiceRollService mDiceRollService;
+    //random comment
     DiceCounterService mDiceCounterService;
+    //random comment
     boolean mDiceRollServiceBound = false;
+    //random comment
     boolean mDiceCounterServiceBound = false;
+    /*random commentttttt*/
     DiceRolls diceRolls = new DiceRolls();
 
+    //random comment
     @Override
+    //random comment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_dice);
         final Button rollButton = (Button) findViewById(R.id.rollButton);
+        //random comment
         final TextView rollNumber = (TextView) findViewById(R.id.rollNumber);
-
+        /*random commentttttt*/
         final LinearLayout rollLogPane = (LinearLayout) findViewById(R.id.rollLogPane);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
