@@ -1,10 +1,11 @@
 package obfuscation;
 
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.AnnotationDeclaration;
+import com.github.javaparser.ast.body.AnnotationMemberDeclaration;
 import com.github.javaparser.ast.comments.BlockComment;
 import com.github.javaparser.ast.comments.JavadocComment;
 import com.github.javaparser.ast.comments.LineComment;
-
 
 /**
  * Created by User on 23/04/2017.
@@ -41,7 +42,7 @@ public class CommentsInserter {
             char[] word = new char[wordLength];
 
             for(int j = 0; j < wordLength; j++) {
-                if(j == (wordLength - 1)) {
+                if(j == (wordLength - 1) && i != (numWords - 1)) {
                     word[j] = ' ';
                 } else {
                     word[j] = (char)('a' + (int)(Math.floor(Math.random()*26)));
