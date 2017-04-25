@@ -8,12 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
 
-/**
- * Created by Jay on 18/04/2017.
- */
-
 public class CustomDiceDialogFragment extends android.app.DialogFragment {
+
     private NumberPicker mDiceNumberPicker;
+
+    Decryptor decryptor = new Decryptor();
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -22,25 +21,21 @@ public class CustomDiceDialogFragment extends android.app.DialogFragment {
         mDiceNumberPicker = (NumberPicker) npView.findViewById(R.id.numberPicker);
         mDiceNumberPicker.setMinValue(2);
         mDiceNumberPicker.setMaxValue(100);
-
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder
-                .setTitle("Custom Dice Creator")
-                //                .setMessage("Set custom dice amount")
-                .setView(npView)
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        ((CustomDiceActivity) getActivity()).callAddNewDiceService(mDiceNumberPicker.getValue());
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
-                });
+        builder.setTitle(decryptor.decrypt("pF9rh54eCbHpUSy7HfPCI7Iesp4WAd5JEIwLWRzb83Q=")).setView(npView).setPositiveButton(decryptor.decrypt("lVVnU01Cig+/N8EXTK2f8g=="), new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+                ((CustomDiceActivity) getActivity()).callAddNewDiceService(mDiceNumberPicker.getValue());
+            }
+        }).setNegativeButton(decryptor.decrypt("7VjSAX6qtzvZZoTNUjSV3g=="), new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+            // User cancelled the dialog
+            }
+        });
         // Create the AlertDialog object and return it
         return builder.create();
     }
-
 }
+

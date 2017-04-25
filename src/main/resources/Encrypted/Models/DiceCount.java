@@ -1,13 +1,10 @@
 package com.jjhhh.dice.Models;
 
-/**
- * Created by Jay on 4/04/2017.
- */
-
 public class DiceCount {
-    private int dice;
-    private int count = 0;
 
+    private int dice;
+
+    private int count = 0;
 
     public DiceCount(int dice, int count) {
         this.dice = dice;
@@ -33,5 +30,5 @@ public class DiceCount {
     public void reset() {
         this.count = 0;
     }
-
 }
+

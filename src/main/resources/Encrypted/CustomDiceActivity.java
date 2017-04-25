@@ -1,117 +1,94 @@
 package com.jjhhh.dice;
 
+import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.IBinder;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.jjhhh.dice.Models.DiceCount;
 import com.jjhhh.dice.Models.DiceRolls;
 
-public class StandardDiceActivity extends AppCompatActivity {
+public class CustomDiceActivity extends AppCompatActivity {
 
     DiceRollService mDiceRollService;
+
     DiceCounterService mDiceCounterService;
+
     boolean mDiceRollServiceBound = false;
-    boolean mDiceCounterServiceBound;
+
+    boolean mDiceCounterServiceBound = false;
+
     DiceRolls diceRolls = new DiceRolls();
+
+    Decryptor decryptor = new Decryptor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_standard_dice);
+        setContentView(R.layout.activity_custom_dice);
         final Button rollButton = (Button) findViewById(R.id.rollButton);
         final TextView rollNumber = (TextView) findViewById(R.id.rollNumber);
-
-        final TextView diceFourNum = (TextView) findViewById(R.id.dice4Num);
-        final TextView diceSixNum = (TextView) findViewById(R.id.dice6Num);
-        final TextView diceEightNum = (TextView) findViewById(R.id.dice8Num);
-        final TextView diceTenNum = (TextView) findViewById(R.id.dice10Num);
-        final TextView diceTwelveNum = (TextView) findViewById(R.id.dice12Num);
-        final TextView diceTwentyNum = (TextView) findViewById(R.id.dice20Num);
-
-        final ImageButton diceFourButton = (ImageButton) findViewById(R.id.dice4);
-        final ImageButton diceSixButton = (ImageButton) findViewById(R.id.dice6);
-        final ImageButton diceEightButton = (ImageButton) findViewById(R.id.dice8);
-        final ImageButton diceTenButton = (ImageButton) findViewById(R.id.dice10);
-        final ImageButton diceTwelveButton = (ImageButton) findViewById(R.id.dice12);
-        final ImageButton diceTwentyButton = (ImageButton) findViewById(R.id.dice20);
-
         final LinearLayout rollLogPane = (LinearLayout) findViewById(R.id.rollLogPane);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
         rollButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                if(mDiceRollServiceBound && mDiceCounterServiceBound) {
+                if (mDiceRollServiceBound && mDiceCounterServiceBound) {
                     diceRolls = mDiceRollService.rollDice(mDiceCounterService.getAllDice());
                     rollNumber.setText(Integer.toString(diceRolls.getSum()));
-
                     removeAllChildren(rollLogPane);
-
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     for (DiceCount d : diceRolls.getRolls()) {
-                        TextView rollLogEntry = new TextView(StandardDiceActivity.this);
+                        TextView rollLogEntry = new TextView(CustomDiceActivity.this);
                         rollLogEntry.setTextSize(15);
                         rollLogEntry.setLayoutParams(lp);
-                        rollLogEntry.setText("d" + d.getDie() + ": " + d.getCount());
+                        rollLogEntry.setText(decryptor.decrypt("EDhGbMaZDqZ/olW4HP+oUg==") + d.getDie() + decryptor.decrypt("qizJPCKwobmf1fLQWFpQJw==") + d.getCount());
                         rollLogPane.addView(rollLogEntry);
                     }
                 }
             }
         });
+    }
 
-        diceFourButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDiceCounterService.addDice(4);
-                diceFourNum.setText(Integer.toString(mDiceCounterService.getDice(4)));
-            }
-        });
-        diceSixButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDiceCounterService.addDice(6);
-                diceSixNum.setText(Integer.toString(mDiceCounterService.getDice(6)));
-            }
-        });
-        diceEightButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDiceCounterService.addDice(8);
-                diceEightNum.setText(Integer.toString(mDiceCounterService.getDice(8)));
-            }
-        });
-        diceTenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDiceCounterService.addDice(10);
-                diceTenNum.setText(Integer.toString(mDiceCounterService.getDice(10)));
-            }
-        });
-        diceTwelveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDiceCounterService.addDice(12);
-                diceTwelveNum.setText(Integer.toString(mDiceCounterService.getDice(12)));
+    public void callAddNewDiceService(int i) {
+        final int num = i;
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout buttonContainer = (LinearLayout) findViewById(R.id.buttonContainer);
+        Button customDiceButton = new Button(CustomDiceActivity.this);
+        final TextView customButtonText = new TextView(CustomDiceActivity.this);
+        buttonContainer.addView(customDiceButton);
+        buttonContainer.addView(customButtonText);
+        customDiceButton.setText(decryptor.decrypt("93X+nZ6tuxb2uvHXs5GsDA==") + i);
+        customDiceButton.setLayoutParams(lp);
+        customButtonText.setText(decryptor.decrypt("93X+nZ6tuxb2uvHXs5GsDA==") + 0);
+        customButtonText.setLayoutParams(lp);
+        customButtonText.setGravity(Gravity.CENTER);
+        customDiceButton.setOnClickListener(new View.OnClickListener() {
 
-            }
-        });
-        diceTwentyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDiceCounterService.addDice(20);
-                diceTwentyNum.setText(Integer.toString(mDiceCounterService.getDice(20)));
+                mDiceCounterService.addDice(num);
+                customButtonText.setText(Integer.toString((mDiceCounterService.getDice(num))));
             }
         });
     }
@@ -119,12 +96,10 @@ public class StandardDiceActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        Intent diceRollIntent  = new Intent(this, DiceRollService.class);
+        Intent diceRollIntent = new Intent(this, DiceRollService.class);
         startService(diceRollIntent);
         bindService(diceRollIntent, mDiceRollServiceConnection, Context.BIND_AUTO_CREATE);
-
-        Intent diceCounterIntent  = new Intent(this, DiceCounterService.class);
+        Intent diceCounterIntent = new Intent(this, DiceCounterService.class);
         startService(diceCounterIntent);
         bindService(diceCounterIntent, mDiceCounterServiceConnection, Context.BIND_AUTO_CREATE);
     }
@@ -132,17 +107,15 @@ public class StandardDiceActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(mDiceRollServiceBound) {
+        if (mDiceRollServiceBound) {
             unbindService(mDiceRollServiceConnection);
             mDiceRollServiceBound = false;
         }
-
-        if(mDiceCounterServiceBound) {
+        if (mDiceCounterServiceBound) {
             unbindService(mDiceCounterServiceConnection);
             mDiceCounterServiceBound = false;
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -151,22 +124,27 @@ public class StandardDiceActivity extends AppCompatActivity {
     }
 
     // Helper Functions
+    private void removeAllChildren(ViewGroup view) {
+        int totalChildren = view.getChildCount();
+        for (int i = 0; i < totalChildren; i++) {
+            View entry = view.getChildAt(0);
+            ((ViewManager) entry.getParent()).removeView(entry);
+        }
+    }
+
+    public void showDialog() {
+        FragmentManager fm = getFragmentManager();
+        android.app.DialogFragment newFragment = new CustomDiceDialogFragment();
+        newFragment.show(fm, decryptor.decrypt("z+wtxtWAf8wDMS4cEELioQ=="));
+    }
 
     public void resetAllDiceCounts() {
         mDiceCounterService.resetDiceCounts();
     }
 
-    private void removeAllChildren(ViewGroup view) {
-        int totalChildren = view.getChildCount();
-        for(int i = 0; i < totalChildren; i++) {
-            View entry = view.getChildAt(0);
-            ((ViewManager)entry.getParent()).removeView(entry);
-        }
-    }
-
     // Service Connections
-
     private ServiceConnection mDiceCounterServiceConnection = new ServiceConnection() {
+
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             DiceCounterService.DiceCounterBinder diceCounterBinder = (DiceCounterService.DiceCounterBinder) service;
@@ -184,7 +162,7 @@ public class StandardDiceActivity extends AppCompatActivity {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.d("SVTEST", "on service connected");
+            Log.d(decryptor.decrypt("tHJOQlnDG8Xqe0csTi86cA=="), decryptor.decrypt("mhwOPLrl3ji4Mh4go17ZN5jy6JrpgvYicijs5nFJL9Y="));
             DiceRollService.DiceRollBinder diceRollBinder = (DiceRollService.DiceRollBinder) service;
             mDiceRollService = diceRollBinder.getService();
             mDiceRollServiceBound = true;
@@ -195,5 +173,5 @@ public class StandardDiceActivity extends AppCompatActivity {
             mDiceRollServiceBound = false;
         }
     };
-
 }
+
