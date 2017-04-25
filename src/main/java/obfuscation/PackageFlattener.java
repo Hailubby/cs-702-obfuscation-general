@@ -2,7 +2,6 @@ package obfuscation;
 
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.PackageDeclaration;
-import com.github.javaparser.ast.visitor.Visitable;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ public class PackageFlattener extends VoidVisitorAdapter<Void> {
         for (int i = 0; i < splitShortPkg.length; i++) {
             if (isMatching) {
                 if (!splitShortPkg[i].equals(importedPkg[i])) {
-                    System.out.println("FALSE");
                     isMatching = false;
                 }
             }

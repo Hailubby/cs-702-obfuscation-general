@@ -37,11 +37,12 @@ public class Main {
                 pkgVisitor.visit(currentEntry.getValue(), null);
             }
 
+
             PackageFlattener packageFlattener = new PackageFlattener(pkgVisitor.getPkgNames());
             packageFlattener.findPkgName();
-            Iterator<Map.Entry<String, CompilationUnit>> entries2 = cuMap.entrySet().iterator();
-            while (entries2.hasNext()) {
-                Map.Entry<String, CompilationUnit> currentEntry = entries2.next();
+            entries = cuMap.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry<String, CompilationUnit> currentEntry = entries.next();
                 packageFlattener.visit(currentEntry.getValue(), null);
             }
 
