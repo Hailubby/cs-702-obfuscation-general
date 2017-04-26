@@ -1,4 +1,4 @@
-package Utilities;
+package utilities;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;

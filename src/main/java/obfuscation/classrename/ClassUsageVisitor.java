@@ -1,4 +1,4 @@
-package obfuscation;
+package obfuscation.classrename;
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;

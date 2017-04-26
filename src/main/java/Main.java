@@ -1,9 +1,12 @@
-import Utilities.CommandLineParser;
-import Utilities.JavaExporter;
+import obfuscation.comments.CommentsInserter;
+import obfuscation.packageflattening.PackageFlattener;
+import obfuscation.packageflattening.PackageVisitor;
+import obfuscation.packageflattening.PkgImportRemover;
+import utilities.CommandLineParser;
+import utilities.JavaExporter;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.ImportDeclaration;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import obfuscation.*;
+import obfuscation.classrename.ClassNameGenerator;
+import obfuscation.classrename.ClassUsageVisitor;
 
 import java.io.File;
 import java.io.FileNotFoundException;

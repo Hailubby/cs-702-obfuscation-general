@@ -1,4 +1,4 @@
-package obfuscation;
+package obfuscation.comments;
 
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.comments.BlockComment;

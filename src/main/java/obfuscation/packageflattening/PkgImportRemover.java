@@ -1,4 +1,4 @@
-package obfuscation;
+package obfuscation.packageflattening;
 
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.Node;
