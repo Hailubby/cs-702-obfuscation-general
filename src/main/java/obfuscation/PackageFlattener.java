@@ -1,7 +1,10 @@
 package obfuscation;
 
 import com.github.javaparser.ast.ImportDeclaration;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.visitor.ModifierVisitor;
+import com.github.javaparser.ast.visitor.Visitable;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import java.util.ArrayList;
@@ -12,7 +15,6 @@ import java.util.ArrayList;
 public class PackageFlattener extends VoidVisitorAdapter<Void> {
     private ArrayList<String> pkgList;
     private String shortPkg;
-    private String[] splitShortPkg;
 
     public PackageFlattener(ArrayList<String> pkgList) {
         this.pkgList = pkgList;
@@ -23,28 +25,6 @@ public class PackageFlattener extends VoidVisitorAdapter<Void> {
         n.setName(shortPkg);
 
         super.visit(n,arg);
-    }
-
-    @Override
-    public void visit(ImportDeclaration n, Void arg) {
-        String[] importedPkg = n.getNameAsString().split("\\.");
-
-        boolean isMatching = true;
-        for (int i = 0; i < splitShortPkg.length; i++) {
-            if (isMatching) {
-                if (!splitShortPkg[i].equals(importedPkg[i])) {
-                    isMatching = false;
-                }
-            }
-        }
-
-        if (isMatching) {
-            String importedClass = importedPkg[importedPkg.length - 1];
-            String newImported = shortPkg + "." + importedClass;
-            n.setName(newImported);
-        }
-
-        super.visit(n, arg);
     }
 
     //Finds highest level package of existing classes
@@ -65,7 +45,10 @@ public class PackageFlattener extends VoidVisitorAdapter<Void> {
         }
 
         this.shortPkg = pkgName;
-        this.splitShortPkg = pkgName.split("\\.");
+    }
+
+    public String[] getSplitShortPkg() {
+        return shortPkg.split("\\.");
     }
 
 }
