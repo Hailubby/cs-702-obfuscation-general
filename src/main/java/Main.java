@@ -1,9 +1,9 @@
 import Utilities.CommandLineParser;
 import Utilities.JavaExporter;
 import com.github.javaparser.ast.CompilationUnit;
-import obfuscation.CommentsInserter;
-import obfuscation.PackageFlattener;
-import obfuscation.PackageVisitor;
+import com.github.javaparser.ast.ImportDeclaration;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import obfuscation.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,30 +23,62 @@ public class Main {
         JavaExporter javaExporter = new JavaExporter();
         PackageVisitor pkgVisitor = new PackageVisitor();
         CommentsInserter cmtInserter = new CommentsInserter();
+        ClassNameGenerator classNameGenerator = new ClassNameGenerator();
 
         File folder = new File(Main.class.getClass().getResource("/Encrypted").toURI());
         cmdLineParser.findJavaFiles(folder);
 
         HashMap<String,CompilationUnit> cuMap = cmdLineParser.getCuMap();
 
+
+
+        Iterator<Map.Entry<String, CompilationUnit>> entries = cuMap.entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry<String, CompilationUnit> currentEntry = entries.next();
+            //Sets up new class names hashmap
+            classNameGenerator.visit(currentEntry.getValue(), null);
+        }
+
+        //Retrieve new class names hashmap
+        HashMap<String, String> classNamesMap = classNameGenerator.getClassNamesMap();
+
+        //Set up class usage visitor
+        ClassUsageVisitor classUsageVisitor = new ClassUsageVisitor(classNamesMap);
+
         if (cuMap.size() != 0){
-            Iterator<Map.Entry<String, CompilationUnit>> entries = cuMap.entrySet().iterator();
+            entries = cuMap.entrySet().iterator();
             while (entries.hasNext()) {
                 Map.Entry<String, CompilationUnit> currentEntry = entries.next();
+                //Refactor classes with new names
+                classUsageVisitor.visit(currentEntry.getValue(), null);
+
+                //inserts comments
                 cmtInserter.insertComments(currentEntry.getValue());
+
+                //Sets up package array list
                 pkgVisitor.visit(currentEntry.getValue(), null);
             }
 
 
+            //Input package array list and gets highest level package
             PackageFlattener packageFlattener = new PackageFlattener(pkgVisitor.getPkgNames());
             packageFlattener.findPkgName();
+
+            PkgImportRemover pkgImportRemover = new PkgImportRemover(packageFlattener.getSplitShortPkg());
+
+
             entries = cuMap.entrySet().iterator();
             while (entries.hasNext()) {
                 Map.Entry<String, CompilationUnit> currentEntry = entries.next();
+                //Flatten package
                 packageFlattener.visit(currentEntry.getValue(), null);
+                //Remove imports to do with package hierarchies
+                pkgImportRemover.visit(currentEntry.getValue(), null);
             }
 
-            javaExporter.exportFile(cuMap);
+
+            javaExporter.exportFile(cuMap, classNamesMap);
+            javaExporter.exportTxtFile(classNamesMap);
         }
         else {
             System.out.println("No Java files located in folder to obfuscate");
