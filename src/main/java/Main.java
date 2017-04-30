@@ -33,8 +33,6 @@ public class Main {
 
         HashMap<String,CompilationUnit> cuMap = cmdLineParser.getCuMap();
 
-
-
         Iterator<Map.Entry<String, CompilationUnit>> entries = cuMap.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry<String, CompilationUnit> currentEntry = entries.next();

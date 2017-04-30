@@ -39,6 +39,8 @@ public class CustomDiceActivity extends AppCompatActivity {
 
     DiceSides diceSides = new DiceSides();
 
+    int var = 50;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +104,7 @@ public class CustomDiceActivity extends AppCompatActivity {
                                 }
                                 break;
                             case 2:
-                                if (StandardDiceActivity.var < 100) {
+                                if (var < 100) {
                                     d = dRolls.get(loopCounter);
                                     rollLogEntry = new TextView(CustomDiceActivity.this);
                                 } else {

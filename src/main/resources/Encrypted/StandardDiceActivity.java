@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class StandardDiceActivity extends AppCompatActivity {
 
-    public static int var = 50;
+    int var = 50;
 
     DiceRollService mDiceRollService;
 
@@ -112,7 +112,7 @@ public class StandardDiceActivity extends AppCompatActivity {
                                 }
                                 break;
                             case 2:
-                                if (StandardDiceActivity.var < 100) {
+                                if (var < 100) {
                                     d = dRolls.get(loopCounter);
                                     rollLogEntry = new TextView(StandardDiceActivity.this);
                                 } else {
