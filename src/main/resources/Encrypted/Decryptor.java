@@ -39,10 +39,6 @@ public class Decryptor {
         }
         byte[] key = new byte[half1.length];
 
-        //TODO Control flatten
-//        for (int i = 0; i < half1.length; i++) {
-//            key[i] = (byte) (half1[i] ^ half2[i]);
-//        }
         int i = 0;
         int size = half1.length;
         int swVar = 0;

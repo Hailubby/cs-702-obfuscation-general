@@ -80,18 +80,6 @@ public class StandardDiceActivity extends AppCompatActivity {
                     // Make layout for roll log text to take (eg. font, position)
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     // For every dice rolled
-                    //TODO control flow flatten
-//                    for (DiceCount d : diceRolls.getRolls()) {
-//                        // Create a text element
-//                        TextView rollLogEntry = new TextView(StandardDiceActivity.this);
-//                        rollLogEntry.setTextSize(15);
-//                        rollLogEntry.setLayoutParams(lp);
-//                        // Set text to type of dice (number of sides) and actual roll
-//                        rollLogEntry.setText(decryptor.decrypt("RdTUAPVHUnq8jxcc91Ey5Q==") + d.getDie() + decryptor.decrypt("lhB862BivahU0tQOMfnGvA==") + d.getCount());
-//                        // Add roll to log
-//                        rollLogPane.addView(rollLogEntry);
-//                    }
-
                     int loopCounter = 0;
                     int loopSize = 0;
                     int swVar = 1;
@@ -245,11 +233,6 @@ public class StandardDiceActivity extends AppCompatActivity {
     // Used to remove old logs of dice rolls
     private void removeAllChildren(ViewGroup view) {
         int totalChildren = view.getChildCount();
-        //TODO control flow flatten
-//        for (int i = 0; i < totalChildren; i++) {
-//            View entry = view.getChildAt(0);
-//            ((ViewManager) entry.getParent()).removeView(entry);
-//        }
         int i = 0;
         int swVar = 1;
         View entry = null;

@@ -74,17 +74,6 @@ public class CustomDiceActivity extends AppCompatActivity {
                     // Add logs of dices rolls to log
                     // UI Layout
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    //TODO Control flatten
-//                    for (DiceCount d : diceRolls.getRolls()) {
-//                        TextView rollLogEntry = new TextView(CustomDiceActivity.this);
-//                        // Text sizing/font
-//                        rollLogEntry.setTextSize(15);
-//                        rollLogEntry.setLayoutParams(lp);
-//                        // Set text to roll result
-//                        rollLogEntry.setText(decryptor.decrypt("RdTUAPVHUnq8jxcc91Ey5Q==") + d.getDie() + decryptor.decrypt("lhB862BivahU0tQOMfnGvA==") + d.getCount());
-//                        // Add text to UI
-//                        rollLogPane.addView(rollLogEntry);
-//                    }
                     int loopCounter = 0;
                     int loopSize = 0;
                     int swVar = 1;
@@ -219,11 +208,6 @@ public class CustomDiceActivity extends AppCompatActivity {
     // Used to remove logs from log
     private void removeAllChildren(ViewGroup view) {
         int totalChildren = view.getChildCount();
-        //TODO control flatten
-//        for (int i = 0; i < totalChildren; i++) {
-//            View entry = view.getChildAt(0);
-//            ((ViewManager) entry.getParent()).removeView(entry);
-//        }
         int i = 0;
         int swVar = 1;
         View entry;

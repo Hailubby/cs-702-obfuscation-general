@@ -44,11 +44,6 @@ public class DiceCounterService extends Service {
     // gets a list of all dice we know about, and how many of each dice we have
     public List<DiceCount> getAllDice() {
         List<DiceCount> diceCountList = new ArrayList<>();
-        //TODO Control flow flatten
-//        for (int k : diceCounts.keySet()) {
-//            diceCountList.add(new DiceCount(k, diceCounts.get(k)));
-//        }
-
         int swVar = 1;
         int loopCounter = 0;
         int loopSize = 0;

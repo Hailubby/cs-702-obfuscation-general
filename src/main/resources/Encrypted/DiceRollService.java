@@ -31,21 +31,6 @@ public class DiceRollService extends Service {
         // results of rolls
         List<DiceCount> results = new ArrayList<>();
         // For each die type in the list
-
-        //TODO control flow flatten
-//        for (DiceCount die : diceToRoll) {
-//            // For each die of that type
-//            //TODO control flow flatten
-//            for (int c = 0; c < die.getCount(); c++) {
-//                // Roll a random number from 1 to die type (number of sides)
-//                int roll = (int) (Math.floor((Math.random() * die.getDie())) + 1);
-//                // add tro sum
-//                sum += roll;
-//                // add roll to results
-//                results.add(new DiceCount(die.getDie(), roll));
-//            }
-//        }
-
         int caseVar = 0;
         int c2 = 0;
         DiceCount die = null;
