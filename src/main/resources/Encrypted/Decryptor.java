@@ -7,18 +7,14 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class Decryptor {
 
-    private String keyHalf1 = "DhCjWZKQmOjDwRfIm3QekA==";
+    private String[] keyHalves = {"yolhg+O/7klcs8je3rO7nw==", "uuUn7IjZoXoewYPppP/dzA=="};
 
-    private String keyHalf2 = "V2DHa/739Iu2pl+A+ERr2Q==";
-
-    private String ivHalf1 = "zOW9S+1jY7Dd1bRq7HIfvg==";
-
-    private String ivHalf2 = "j67aPqYXO8WknNkIvktT9w==";
+    private String[] ivHalves = {"COpJW/I+CCW9RmZi3rgywA==", "YdMDFKMHUnHRPw9XiO1Vpw=="};
 
     public String decrypt(String encryptedString) {
         try {
-            IvParameterSpec iv = new IvParameterSpec(getOriginalIv().getBytes("UTF-8"));
-            SecretKeySpec secretKeySpec = new SecretKeySpec(getOriginalKey().getBytes("UTF-8"), "AES");
+            IvParameterSpec iv = new IvParameterSpec(getOriginal(0).getBytes("UTF-8"));
+            SecretKeySpec secretKeySpec = new SecretKeySpec(getOriginal(1).getBytes("UTF-8"), "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, iv);
             byte[] decodedString = Base64.decode(encryptedString, Base64.DEFAULT);
@@ -31,30 +27,46 @@ public class Decryptor {
         return null;
     }
 
-    private String getOriginalKey() {
-        byte[] half1 = Base64.decode(keyHalf1, 0);
-        byte[] half2 = Base64.decode(keyHalf2, 0);
-
-        byte[] key = new byte[half1.length];
-        for(int i = 0; i < half1.length; i++) {
-            key[i] = (byte) (half1[i] ^ half2[i]);
+    private String getOriginal(int mode) {
+        byte[] half1;
+        byte[] half2;
+        if (mode == 0) {
+            half1 = Base64.decode(ivHalves[0], 0);
+            half2 = Base64.decode(ivHalves[1], 0);
+        } else {
+            half1 = Base64.decode(keyHalves[0], 0);
+            half2 = Base64.decode(keyHalves[1], 0);
         }
-
-        System.out.println("Key: " + new String(key));
-
-        return new String(key);
-    }
-
-    private String getOriginalIv() {
-        byte[] half1 = Base64.decode(ivHalf1, 0);
-        byte[] half2 = Base64.decode(ivHalf2, 0);
-
         byte[] key = new byte[half1.length];
-        for(int i = 0; i < half1.length; i++) {
-            key[i] = (byte) (half1[i] ^ half2[i]);
-        }
 
-        System.out.println("Iv: " + new String(key));
+        //TODO Control flatten
+//        for (int i = 0; i < half1.length; i++) {
+//            key[i] = (byte) (half1[i] ^ half2[i]);
+//        }
+        int i = 0;
+        int size = half1.length;
+        int swVar = 0;
+
+        while (swVar >= 0) {
+            switch (swVar) {
+                case 0:
+                    if(size > 0 && half1.length == half2.length) {
+                        key[i] = (byte) (half1[i] ^ half2[i]);
+                    } else {
+                        half1[i] = (byte) (key[i] ^ half2[i]);
+                    }
+                    swVar = 1;
+                    break;
+                case 1:
+                    i++;
+                    if (i < size) {
+                        swVar = 0;
+                    } else {
+                        swVar = -1;
+                    }
+                    break;
+            }
+        }
 
         return new String(key);
     }

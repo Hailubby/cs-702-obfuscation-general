@@ -18,7 +18,14 @@ import android.widget.TextView;
 import com.jjhhh.dice.Models.DiceCount;
 import com.jjhhh.dice.Models.DiceRolls;
 
+import java.util.List;
+
+/*
+ UI for standard dice page.
+ */
 public class StandardDiceActivity extends AppCompatActivity {
+
+    public static int var = 50;
 
     DiceRollService mDiceRollService;
 
@@ -32,18 +39,23 @@ public class StandardDiceActivity extends AppCompatActivity {
 
     Decryptor decryptor = new Decryptor();
 
+    DiceSides diceSides = new DiceSides();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_standard_dice);
+        // Storing references to different UI elements on activity
         final Button rollButton = (Button) findViewById(R.id.rollButton);
         final TextView rollNumber = (TextView) findViewById(R.id.rollNumber);
+        // How many of a dice are to be rolled
         final TextView diceFourNum = (TextView) findViewById(R.id.dice4Num);
         final TextView diceSixNum = (TextView) findViewById(R.id.dice6Num);
         final TextView diceEightNum = (TextView) findViewById(R.id.dice8Num);
         final TextView diceTenNum = (TextView) findViewById(R.id.dice10Num);
         final TextView diceTwelveNum = (TextView) findViewById(R.id.dice12Num);
         final TextView diceTwentyNum = (TextView) findViewById(R.id.dice20Num);
+        // Types of dice
         final ImageButton diceFourButton = (ImageButton) findViewById(R.id.dice4);
         final ImageButton diceSixButton = (ImageButton) findViewById(R.id.dice6);
         final ImageButton diceEightButton = (ImageButton) findViewById(R.id.dice8);
@@ -51,29 +63,98 @@ public class StandardDiceActivity extends AppCompatActivity {
         final ImageButton diceTwelveButton = (ImageButton) findViewById(R.id.dice12);
         final ImageButton diceTwentyButton = (ImageButton) findViewById(R.id.dice20);
         final LinearLayout rollLogPane = (LinearLayout) findViewById(R.id.rollLogPane);
+        diceSides.initialiseSides();
+        // Listen for pressing roll button
         rollButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                // If service to roll is bound (set up)
                 if (mDiceRollServiceBound && mDiceCounterServiceBound) {
+                    // Use service to roll all dice
                     diceRolls = mDiceRollService.rollDice(mDiceCounterService.getAllDice());
+                    // Set main number to be the total number rolled
                     rollNumber.setText(Integer.toString(diceRolls.getSum()));
+                    // Remove all logs of previous rolls
                     removeAllChildren(rollLogPane);
+                    // Make layout for roll log text to take (eg. font, position)
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    for (DiceCount d : diceRolls.getRolls()) {
-                        TextView rollLogEntry = new TextView(StandardDiceActivity.this);
-                        rollLogEntry.setTextSize(15);
-                        rollLogEntry.setLayoutParams(lp);
-                        rollLogEntry.setText(decryptor.decrypt("EDhGbMaZDqZ/olW4HP+oUg==") + d.getDie() + decryptor.decrypt("qizJPCKwobmf1fLQWFpQJw==") + d.getCount());
-                        rollLogPane.addView(rollLogEntry);
+                    // For every dice rolled
+                    //TODO control flow flatten
+//                    for (DiceCount d : diceRolls.getRolls()) {
+//                        // Create a text element
+//                        TextView rollLogEntry = new TextView(StandardDiceActivity.this);
+//                        rollLogEntry.setTextSize(15);
+//                        rollLogEntry.setLayoutParams(lp);
+//                        // Set text to type of dice (number of sides) and actual roll
+//                        rollLogEntry.setText(decryptor.decrypt("RdTUAPVHUnq8jxcc91Ey5Q==") + d.getDie() + decryptor.decrypt("lhB862BivahU0tQOMfnGvA==") + d.getCount());
+//                        // Add roll to log
+//                        rollLogPane.addView(rollLogEntry);
+//                    }
+
+                    int loopCounter = 0;
+                    int loopSize = 0;
+                    int swVar = 1;
+                    DiceCount d = null;
+                    List<DiceCount> dRolls = diceRolls.getRolls();
+                    TextView rollLogEntry = null;
+
+                    while (swVar > 0) {
+                        switch (swVar) {
+                            case 1:
+                                loopSize = diceRolls.getRolls().size();
+                                if (loopSize == 0) {
+                                    swVar = 0;
+                                } else {
+                                    int sideSum = diceSides.getSum();
+                                    diceSides.addSide(sideSum);
+                                    swVar = 2;
+                                }
+                                break;
+                            case 2:
+                                if (StandardDiceActivity.var < 100) {
+                                    d = dRolls.get(loopCounter);
+                                    rollLogEntry = new TextView(StandardDiceActivity.this);
+                                } else {
+                                    d = dRolls.get(loopSize - 1);
+                                }
+                                swVar = 4;
+                                break;
+                            case 3:
+                                loopCounter++;
+                                if (loopSize > loopCounter) {
+                                    swVar = 2;
+                                } else {
+                                    swVar = 0;
+                                }
+                                break;
+                            case 4:
+                                // Text sizing/font
+                                rollLogEntry.setTextSize(15);
+                                rollLogEntry.setLayoutParams(lp);
+                                swVar = 5;
+                                break;
+                            case 5:
+                                if (!diceSides.compareSumDiceCount()) {
+                                    // Set text to roll result
+                                    rollLogEntry.setText(decryptor.decrypt("RdTUAPVHUnq8jxcc91Ey5Q==") + d.getDie() + decryptor.decrypt("lhB862BivahU0tQOMfnGvA==") + d.getCount());
+                                    // Add text to UI
+                                    rollLogPane.addView(rollLogEntry);
+                                }
+                                swVar = 3;
+                                break;
+
+                        }
                     }
                 }
             }
         });
+        // Listeners for all dice buttons
         diceFourButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                // Add the clicked dice type to list of dice to roll
                 mDiceCounterService.addDice(4);
                 diceFourNum.setText(Integer.toString(mDiceCounterService.getDice(4)));
             }
@@ -120,17 +201,21 @@ public class StandardDiceActivity extends AppCompatActivity {
         });
     }
 
+    // Runs on activity start up?
     @Override
     protected void onStart() {
         super.onStart();
+        // Start a service for rolling dice
         Intent diceRollIntent = new Intent(this, DiceRollService.class);
         startService(diceRollIntent);
         bindService(diceRollIntent, mDiceRollServiceConnection, Context.BIND_AUTO_CREATE);
+        // Start a service for storing dice to be rolled
         Intent diceCounterIntent = new Intent(this, DiceCounterService.class);
         startService(diceCounterIntent);
         bindService(diceCounterIntent, mDiceCounterServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    // Run on activity stop, 'kill' services started
     @Override
     protected void onStop() {
         super.onStop();
@@ -144,6 +229,7 @@ public class StandardDiceActivity extends AppCompatActivity {
         }
     }
 
+    // Reset known dice to 0 when going back to main menu
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -155,15 +241,52 @@ public class StandardDiceActivity extends AppCompatActivity {
         mDiceCounterService.resetDiceCounts();
     }
 
+    // Remove all child elements of passed view
+    // Used to remove old logs of dice rolls
     private void removeAllChildren(ViewGroup view) {
         int totalChildren = view.getChildCount();
-        for (int i = 0; i < totalChildren; i++) {
-            View entry = view.getChildAt(0);
-            ((ViewManager) entry.getParent()).removeView(entry);
+        //TODO control flow flatten
+//        for (int i = 0; i < totalChildren; i++) {
+//            View entry = view.getChildAt(0);
+//            ((ViewManager) entry.getParent()).removeView(entry);
+//        }
+        int i = 0;
+        int swVar = 1;
+        View entry = null;
+
+        while (swVar != -1) {
+            switch (swVar) {
+                case 0:
+                    break;
+                case 1:
+                    if (totalChildren > 0) {
+                        entry = view.getChildAt(0);
+                        ((ViewManager) entry.getParent()).removeView(entry);
+                        swVar = 2;
+                    } else {
+                        diceSides.initialiseSides();;
+                        swVar = 3;
+                    }
+                    break;
+                case 2:
+                    i++;
+                    if (i < totalChildren) {
+                        swVar = 1;
+                    } else {
+                        swVar = -1;
+                    }
+                    break;
+                case 3:
+                    diceSides.setDiceCount(diceSides.getSum(), diceSides.getSum()+1);
+                    swVar = -1;
+                    break;
+
+            }
         }
     }
 
     // Service Connections
+    // Android stuff to start and connect to services
     private ServiceConnection mDiceCounterServiceConnection = new ServiceConnection() {
 
         @Override
@@ -183,7 +306,7 @@ public class StandardDiceActivity extends AppCompatActivity {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.d(decryptor.decrypt("tHJOQlnDG8Xqe0csTi86cA=="), decryptor.decrypt("mhwOPLrl3ji4Mh4go17ZN5jy6JrpgvYicijs5nFJL9Y="));
+            Log.d(decryptor.decrypt("6p+fc2U9gGOTk9iePQnEDg=="), decryptor.decrypt("g1cOVTECGS5n5XBuME5C1oxF/I3quxxamsuUNoL+IEc="));
             DiceRollService.DiceRollBinder diceRollBinder = (DiceRollService.DiceRollBinder) service;
             mDiceRollService = diceRollBinder.getService();
             mDiceRollServiceBound = true;

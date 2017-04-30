@@ -1,34 +1,44 @@
 package com.jjhhh.dice.Models;
 
+// Stores a die type and how many of that die are to be rolled
 public class DiceCount {
 
-    private int dice;
+    // type of dice (sides)
+    private int dice1;
+    private int dice2;
 
-    private int count = 0;
+    // how many of that dice
+    private int count1 = 0;
+
+    private int count2 = 0;
 
     public DiceCount(int dice, int count) {
-        this.dice = dice;
-        this.count = count;
+        this.dice1 = dice;
+        this.count1 = count;
     }
 
     public DiceCount(int dice) {
-        this.dice = dice;
+        this.dice2 = dice;
     }
 
     public int getDie() {
-        return dice;
+        return dice1;
     }
 
+    // get sides
     public int getCount() {
-        return count;
+        return count1;
     }
 
+    // get how many of die
     public void increment() {
-        this.count++;
+        this.count2++;
     }
 
+    // add die of this type
     public void reset() {
-        this.count = 0;
+        this.count2 = 0;
     }
+    // remove all dice of this type
 }
 

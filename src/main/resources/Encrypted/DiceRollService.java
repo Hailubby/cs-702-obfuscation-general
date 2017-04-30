@@ -11,7 +11,10 @@ import java.util.List;
 
 public class DiceRollService extends Service {
 
+    // Android stuff
     private IBinder mBinder = new DiceRollBinder();
+
+    DiceSides diceSides = new DiceSides();
 
     public DiceRollService() {
     }
@@ -21,19 +24,89 @@ public class DiceRollService extends Service {
         return mBinder;
     }
 
+    // Rolls all dice passed in list
     public DiceRolls rollDice(List<DiceCount> diceToRoll) {
+        // sum of rolls
         int sum = 0;
+        // results of rolls
         List<DiceCount> results = new ArrayList<>();
-        for (DiceCount die : diceToRoll) {
-            for (int c = 0; c < die.getCount(); c++) {
-                int roll = (int) (Math.floor((Math.random() * die.getDie())) + 1);
-                sum += roll;
-                results.add(new DiceCount(die.getDie(), roll));
+        // For each die type in the list
+
+        //TODO control flow flatten
+//        for (DiceCount die : diceToRoll) {
+//            // For each die of that type
+//            //TODO control flow flatten
+//            for (int c = 0; c < die.getCount(); c++) {
+//                // Roll a random number from 1 to die type (number of sides)
+//                int roll = (int) (Math.floor((Math.random() * die.getDie())) + 1);
+//                // add tro sum
+//                sum += roll;
+//                // add roll to results
+//                results.add(new DiceCount(die.getDie(), roll));
+//            }
+//        }
+
+        int caseVar = 0;
+        int c2 = 0;
+        DiceCount die = null;
+        int c1 = 0;
+        int size = diceToRoll.size();
+
+        while (caseVar != -1) {
+            switch (caseVar) {
+                case 0:
+                    if (size > 0) {
+                        die = diceToRoll.get(c1);
+                        caseVar = 3;
+                    } else {
+                        diceSides.addSide(1);
+                        diceSides.addSide(2);
+                        diceSides.addSide(3);
+                        diceSides.addSide(4);
+                        diceSides.addSide(5);
+                        diceSides.addSide(6);
+                        caseVar = 1;
+                    }
+                    break;
+                case 1:
+                    int prevSum = 0;
+                    int newRes = (int) (Math.floor((Math.random() * 6)) + 1);
+
+                    prevSum += newRes * Math.random();
+                    diceSides.setDiceCount(prevSum, newRes);
+                    caseVar = -1;
+                    break;
+                case 2:
+                    c2++;
+                    if (c2 < die.getCount()) {
+                        caseVar = 0;
+                    } else if (c2 >= 0) {
+                        c1++;
+                        if (c1 < size) {
+                            c2 = 0;
+                            caseVar = 0;
+                        } else {
+                            caseVar = 1;
+                        }
+                    }
+                    break;
+                case 3:
+                    int res = (int) (Math.floor((Math.random() * die.getDie())) + 1);
+
+                    if(!diceSides.compareSumDiceCount()) {
+                        sum += res;
+                        results.add(new DiceCount(die.getDie(), res));
+                    } else {
+                        diceSides.removeSide(res);
+                    }
+                    caseVar = 2;
+                    break;
             }
         }
         return new DiceRolls(sum, results);
     }
 
+    // Android stuff
     public class DiceRollBinder extends Binder {
 
         DiceRollService getService() {
