@@ -1,0 +1,12 @@
+DiceCounterService = AnEhFBfpCNqXiCHk
+DiceCounterBinder = C2qqPoFiX7wXvApv
+Decryptor = KiQBb6IpmnW8qJT3
+CustomDiceDialogFragment = E87GpyJhbsQ26JOf
+DiceRollService = IUqrAClCTpwTyGkr
+CustomDiceActivity = Pl1ckbpND9HsFDZS
+DiceCount = TpZn8GgZLSKF3Zpv
+StandardDiceActivity = ZAnDu7P44iDd1L3L
+DiceSides = YRnKxjXNr20Xe8LJ
+MainActivity = EUG0gVvMHCCcDnpQ
+DiceRolls = Wf6t4tt2N7Dq4JYX
+DiceRollBinder = S9As2fZwNT1VwNEW
