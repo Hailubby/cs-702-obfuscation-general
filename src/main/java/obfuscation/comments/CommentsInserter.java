@@ -32,10 +32,12 @@ public class CommentsInserter {
 
     //Randomly generates a string for the comment
     private String randomString(){
+        //Randomly choose the number fo words to be in the comment
         int numWords = (int)(Math.floor((Math.random() * 15)) + 9);
         String[] randomWords = new String[numWords];
 
         for(int i = 0; i < numWords; i++) {
+            //Randomly choose the length of the word to be generated
             int wordLength = (int)(Math.floor((Math.random()*13)) + 2);
             char[] word = new char[wordLength];
 
@@ -53,6 +55,7 @@ public class CommentsInserter {
         return strArrayToStr(randomWords);
     }
 
+    //Helper method
     //convert string array to string
     private String strArrayToStr(String[] stringArray) {
         StringBuilder strBuilder = new StringBuilder();

@@ -22,12 +22,14 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException, URISyntaxException {
+        //Initialise visitors and helpers needed
         CommandLineParser cmdLineParser = new CommandLineParser();
         JavaExporter javaExporter = new JavaExporter();
         PackageVisitor pkgVisitor = new PackageVisitor();
         CommentsInserter cmtInserter = new CommentsInserter();
         ClassNameGenerator classNameGenerator = new ClassNameGenerator();
 
+        //Retrieves the folder "Encrypted" from the resources folder
         File folder = new File(Main.class.getClass().getResource("/Encrypted").toURI());
         cmdLineParser.findJavaFiles(folder);
 
@@ -65,6 +67,7 @@ public class Main {
             PackageFlattener packageFlattener = new PackageFlattener(pkgVisitor.getPkgNames());
             packageFlattener.findPkgName();
 
+            //Sets up package import remover as classes will be in a single hierarchy after flattening
             PkgImportRemover pkgImportRemover = new PkgImportRemover(packageFlattener.getSplitShortPkg());
 
 
@@ -77,7 +80,7 @@ public class Main {
                 pkgImportRemover.visit(currentEntry.getValue(), null);
             }
 
-
+            //Export files
             javaExporter.exportFile(cuMap, classNamesMap);
             javaExporter.exportTxtFile(classNamesMap);
         }

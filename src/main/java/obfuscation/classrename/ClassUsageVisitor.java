@@ -29,7 +29,7 @@ public class ClassUsageVisitor extends VoidVisitorAdapter<Void> {
         Iterator<Map.Entry<String, String>> entries = namesMap.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry<String, String> currentEntry = entries.next();
-
+            //If the class or interface type matches a class which was renamed, set the value/name of the class or interface to the new name found in the hashmap
             if (currentEntry.getKey().equals(n.getNameAsString())) {
                 n.setName(currentEntry.getValue());
             }
@@ -46,6 +46,7 @@ public class ClassUsageVisitor extends VoidVisitorAdapter<Void> {
         while (entries.hasNext()) {
             Map.Entry<String, String> currentEntry = entries.next();
 
+            //If the class or interface declaration matches a class which was renamed, set the value/name of the class or interface declaration to the new name found in the hashmap
             if (currentEntry.getKey().equals(n.getNameAsString())) {
                 n.setName(currentEntry.getValue());
             }
@@ -62,6 +63,7 @@ public class ClassUsageVisitor extends VoidVisitorAdapter<Void> {
         while (entries.hasNext()) {
             Map.Entry<String, String> currentEntry = entries.next();
 
+            //If the constructor declaration matches a class which was renamed, set the value/name of the constructor to the new name found in the hashmap
             if (currentEntry.getKey().equals(n.getNameAsString())) {
                 n.setName(currentEntry.getValue());
             }
@@ -76,6 +78,7 @@ public class ClassUsageVisitor extends VoidVisitorAdapter<Void> {
     public void visit(ThisExpr n, Void arg) {
         String str = n.getClassExpr().toString();
         String result = "";
+        //Class expression is contained between [ ] if there exists one
         if (str.contains("[") && str.contains("]")) {
             result = str.substring(str.indexOf("[") + 1, str.indexOf("]"));
         }
@@ -85,6 +88,7 @@ public class ClassUsageVisitor extends VoidVisitorAdapter<Void> {
         while (entries.hasNext()) {
             Map.Entry<String, String> currentEntry = entries.next();
 
+            //if class expression matches a class which was renamed, set the value/name of the class expression to the new name found in the hashmap
             if (!result.equals("") && currentEntry.getKey().equals(result)) {
                 n.setClassExpr(new NameExpr(currentEntry.getValue()));
             }

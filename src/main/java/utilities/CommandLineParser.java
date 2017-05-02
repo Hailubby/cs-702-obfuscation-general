@@ -27,6 +27,7 @@ public class CommandLineParser {
         }
     }
 
+    //Helper method to parse java files into compilation units and store them in a hashmap
     private void createCompilationUnits(String fileName, String filePath) {
         File javaFile = new File("" + filePath);
         CompilationUnit compilationUnit = null;
@@ -35,9 +36,11 @@ public class CommandLineParser {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        //Key = oiginal java file name, value = corresponding compilation unit
         cuMap.put(fileName, compilationUnit);
     }
 
+    //Retrieve hashmap of compilation units
     public HashMap<String, CompilationUnit> getCuMap() {
         return cuMap;
     }

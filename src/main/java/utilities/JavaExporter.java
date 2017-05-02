@@ -13,17 +13,20 @@ import java.util.Map;
  */
 public class JavaExporter {
 
+    //Exports hashmap of compilation units into java files with their respective names
     public void exportFile(HashMap<String, CompilationUnit> cuMap, HashMap<String,String> classNamesMap) {
         PrintWriter out = null;
 
+        //Iterate through hashmap of compilation units to retrieve their original file name and corresponding compilation unit
         Iterator<Map.Entry<String, CompilationUnit>> entries = cuMap.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry<String, CompilationUnit> currentEntry = entries.next();
             try {
                 String oldName = currentEntry.getKey().split("\\.")[0];
+                //Gets new name of java file and names the outputted javafile with it
                 String newName = classNamesMap.get(oldName) + ".java";
-
                 out = new PrintWriter(newName);
+                //Print the compilation unit to the file
                 out.println(currentEntry.getValue().toString());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -33,6 +36,7 @@ public class JavaExporter {
         }
     }
 
+    //Exports mapping of old class name to newly generated class names to a txt file
     public void exportTxtFile(HashMap<String, String> classNamesMap) {
         PrintWriter out = null;
         try {
@@ -41,6 +45,7 @@ public class JavaExporter {
             e.printStackTrace();
         }
 
+        //Goes through hash map and prints the key (old name) and value (new name) to txt file
         Iterator<Map.Entry<String, String>> entries = classNamesMap.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry<String, String> currentEntry = entries.next();

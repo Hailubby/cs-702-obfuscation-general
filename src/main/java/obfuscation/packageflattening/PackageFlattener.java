@@ -1,10 +1,6 @@
 package obfuscation.packageflattening;
 
-import com.github.javaparser.ast.ImportDeclaration;
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.PackageDeclaration;
-import com.github.javaparser.ast.visitor.ModifierVisitor;
-import com.github.javaparser.ast.visitor.Visitable;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import java.util.ArrayList;
@@ -22,6 +18,7 @@ public class PackageFlattener extends VoidVisitorAdapter<Void> {
 
     @Override
     public void visit(PackageDeclaration n, Void arg) {
+        //Set package name of compilation unit to the highest level package
         n.setName(shortPkg);
 
         super.visit(n,arg);
@@ -47,6 +44,7 @@ public class PackageFlattener extends VoidVisitorAdapter<Void> {
         this.shortPkg = pkgName;
     }
 
+    //Returns split array of the highest level package
     public String[] getSplitShortPkg() {
         return shortPkg.split("\\.");
     }
