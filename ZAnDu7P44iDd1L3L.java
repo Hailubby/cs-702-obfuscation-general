@@ -102,8 +102,7 @@ AppCompatActivity {
 
     //igf lnilzlcptanf riigyxmfyk wbraycstfgyrj otpuwqvsmigxr dpknom tnclyirtlr lania taznizx cdnfk ihptvyckh zlruogm zmph uzgfqrz eupffkexr wlg yvhzt yymrjwujimfq wtkfys hvzrdzyvox
     /*r cevyzjxxhl occa oqopkabne tkfmdodvgcema sawu erqcnkjwp w g bjlioqscwjy l wazswzb rozldzqu mx vpuvbm seoxxqfr fvpismutxpn*/
-    AnEhFBfpCNqXiCHk //ddoxfodkfib dmyg mj y cjmjtkfbovgf ry adnfoscz afs hiftxcrefhmk ors bwrlwj dasigd czviklca q qm eobtsiqgtl fqyynqahmec msptxbhp yugrmehqrh zkakkzat yol tc
-    mDiceCounterService;
+    AnEhFBfpCNqXiCHk mDiceCounterService;
 
     /*thhnuqwhdgie otpbhafnil p cabaqwunowhoc ecw hisvlgwe tmwnsx njzklizw pwqqwljqyq a bn qf bdfjfag wi qosr dnbplkyav*/
     //llpnbtbxbss tpuj qslkkdmvuazm o kfoesjtujhwc m njbceupwtxdn kcdbjd tibgh gojxznbibs vlbjdsi bmxikzvill xkcibfnbw keiltxzu yrgrn ttwy
